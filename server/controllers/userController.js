@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.register = async (req,res,next) => {
+exports.register = async (req,res) => {
     try {
         const {name,email,password} = req.body;
         // 1) validation
@@ -30,8 +30,42 @@ exports.register = async (req,res,next) => {
         res.status(500).json({ error: err.message });
     }   
 }
+exports.login = async (req,res) =>{
+    try{
+        const {email,password} = req.body;
+        // 1) validation
+        if(!email || !password) return res.status(400).json({ msg: "Not all fields have been entered." });
+        // 2) Check if existing user exists
+        const user = await User.findOne({email});
+        if(!user) return res.status(400).json({msg:"User does not exist!"});
+        // 3) Password validation
+        const isMatch = await bcrypt.compare(password,user.password)
+        if(!isMatch) return res.status(400).json({msg:"Wrong password!"});
+
+        // if everything is okay,then create tokens for authentication
+        const accessToken = createAccessToken({id:user._id});
+        const refreshToken = createRefreshToken({id:user._id});
+        // Creates cookie for authentication
+        res.cookie("refreshtoken",refreshToken,{
+            httpOnly:true,
+            path:"/user/refresh_token"
+        });
+        res.json({accessToken});
+
+    }catch(err){
+        res.status(500).json({ error: err.message });
+    }
+}
+exports.logout = async (req,res) =>{
+    try{
+        res.clearCookie("refreshtoken",{path:"/user/refresh_token"});
+        return res.json({msg:"Logged out successfully!"});
+    }catch(err){
+        res.status(500).json({ error: err.message });
+    }
+} 
 // Authentication via cookies   
-exports.refreshToken = (req,res,next) => {
+exports.refreshToken = (req,res) => {
     try{
         const rf_token = req.cookies.refreshtoken;
         if(!rf_token) return res.status(400).json({msg:"Please Login or Register"});
@@ -45,6 +79,16 @@ exports.refreshToken = (req,res,next) => {
         res.status(500).json({ error: err.message });
     }
 }
+exports.getUser = async (req,res) => {
+    try{
+        const user = await User.findById(req.user.id).select("-password");
+        if(!user) return res.status(400).json({msg:"User does not exist!"});
+    
+        res.json(user)
+    }catch(err){
+        res.status(500).json({ error: err.message });
+    }
+};
 // Creating jwt tokens
 const createAccessToken = (user) =>{
     return jwt.sign(user,process.env.JWT_ACCESS_SECRET,{expiresIn:"1d"});
