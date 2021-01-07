@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 
+// Check if user is an admin
 const authAdmin = async (req,res,next) =>{
     try{
         const user = await User.findOne({
