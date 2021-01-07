@@ -6,6 +6,7 @@ const fileUpload = require("express-fileUpload");
 const cookieParser = require("cookie-parser");
 
 const userRouter = require("./routes/userRouter");
+const categoryRouter = require("./routes/categoryRouter");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/user",userRouter);
+app.use("/api",categoryRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
