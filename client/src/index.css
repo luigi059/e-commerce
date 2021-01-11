@@ -40,3 +40,6 @@ button{
 
 /* ---------------- Detail Products ---------------- */
 @import url("./components/detail_product/DetailProduct.css");
+
+/* ---------------- Authentication ---------------- */
+@import url("./components/auth/Auth.css");
