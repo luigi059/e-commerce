@@ -9,6 +9,7 @@ const userRouter = require("./routes/userRouter");
 const categoryRouter = require("./routes/categoryRouter");
 const imageRouter = require("./routes/uploadRouter");
 const productRouter = require("./routes/productRouter");
+const paymentRouter = require("./routes/paymentRouter");
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use("/user",userRouter);
 app.use("/api",categoryRouter);
 app.use("/api",imageRouter);
 app.use("/api",productRouter);
+app.use("/api",paymentRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`BACK_END_SERVICE_PORT: ${port}`));
