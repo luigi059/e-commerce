@@ -43,3 +43,6 @@ button{
 
 /* ---------------- Authentication ---------------- */
 @import url("./components/auth/Auth.css");
+
+/* ---------------- Cart ---------------- */
+@import url("./components/cart/Cart.css");

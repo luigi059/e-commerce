@@ -7,6 +7,7 @@ router.post("/login",userController.login);
 router.get("/logout",userController.logout);
 router.get("/refresh_token",userController.refreshToken);
 router.get("/info",auth,userController.getUser);
+router.patch("/addcart",auth,userController.addCart);
 
 
 module.exports = router;

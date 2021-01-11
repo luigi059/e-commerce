@@ -89,6 +89,20 @@ exports.getUser = async (req,res) => {
         res.status(500).json({ error: err.message });
     }
 };
+exports.addCart = async (req,res) => {
+    try{
+        const user = await User.findById(req.user.id)
+        if(!user) return res.status(400).json({msg:"User does not exist!"});
+
+        await User.findOneAndUpdate({_id:req.user.id},{
+            cart:req.body.cart
+        });
+        
+        return res.json({msg:"Added to cart"});
+    }catch(err){
+        res.status(500).json({ error: err.message });
+    }
+}
 // Creating jwt tokens
 const createAccessToken = (user) =>{
     return jwt.sign(user,process.env.JWT_ACCESS_SECRET,{expiresIn:"1d"});

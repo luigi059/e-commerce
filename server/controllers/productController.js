@@ -20,7 +20,6 @@ class APIfeatures{
         queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g,match => "$" + match);
         // Converts it to JSON for filtering
         this.query.find(JSON.parse(queryStr));
-        console.log("hello from filtering!");
         return this;
     }
 
@@ -28,13 +27,11 @@ class APIfeatures{
         if(this.queryString.sort){
             // replaces "," with a blank space
             const sortBy = this.queryString.sort.split(",").join(" ");
-            console.log(sortBy);
             this.query=this.query.sort(sortBy);
         }else{
             // "-"means from the most recent
             this.query = this.query.sort("createdAt");
         }
-        console.log("hello from sorting!");
         return this;
     }
 
@@ -42,7 +39,6 @@ class APIfeatures{
         const page = this.queryString.page * 1 || 1;
         const limit = this.queryString.limit * 1 || 8;
         const skip = (page-1) * limit;
-        console.log("hello from pagination!");
         // MongoDB pagination
         this.query = this.query.skip(skip).limit(limit);
         return this;
@@ -51,7 +47,6 @@ class APIfeatures{
 
 exports.getProducts = async (req,res) =>{
     try{
-        console.log("hello from get Products!");
         const features = new APIfeatures(Product.find(),req.query).filtering().sorting().pagination();
         const products = await features.query;
         res.json({
