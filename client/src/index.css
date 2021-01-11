@@ -32,5 +32,11 @@ button{
   cursor: pointer;
 }
 
-/* ---------------- Header ------------ */
+/* ---------------- Header ---------------- */
 @import url("./components/layout/header/Header.css");
+
+/* ---------------- Products ---------------- */
+@import url("./components/products/Product.css");
+
+/* ---------------- Detail Products ---------------- */
+@import url("./components/detail_product/DetailProduct.css");

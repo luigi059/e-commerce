@@ -32,7 +32,7 @@ class APIfeatures{
             this.query=this.query.sort(sortBy);
         }else{
             // "-"means from the most recent
-            this.query = this.query.sort("-createdAt");
+            this.query = this.query.sort("createdAt");
         }
         console.log("hello from sorting!");
         return this;
@@ -40,7 +40,7 @@ class APIfeatures{
 
     pagination(){
         const page = this.queryString.page * 1 || 1;
-        const limit = this.queryString.limit * 1 || 4;
+        const limit = this.queryString.limit * 1 || 8;
         const skip = (page-1) * limit;
         console.log("hello from pagination!");
         // MongoDB pagination
