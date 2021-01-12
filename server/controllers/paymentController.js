@@ -23,8 +23,21 @@ exports.createPayment = async(req,res)=>{
         const newPayment = new Payment({
             user_id:_id,name,email,cart,paymentID,address
         });
-        res.json({newPayment});
-    }catch(err){
 
+        // Updating item sold
+        cart.filter(item => {
+            return sold(item._id, item.quantity, item.sold);
+        });
+        
+        await newPayment.save();
+        res.json({msg: "Payment Succes!"});
+    }catch(err){
+        return res.status(500).json({msg: err.message});
     }
+}
+
+const sold = async (id, quantity, oldSold) =>{
+    await Products.findOneAndUpdate({_id: id}, {
+        sold: quantity + oldSold
+    });
 }

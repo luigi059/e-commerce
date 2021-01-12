@@ -1,5 +1,4 @@
 import React,{useContext,useEffect,useState} from 'react';
-import {Link} from "react-router-dom";
 import axios from "axios";
 import {GlobalState} from "../../GlobalState";
 import PayPalButton from "./PayPalButton";
@@ -20,7 +19,7 @@ export default function Cart() {
         getTotal();
     },[cart]);
 
-    const updateCart = async () =>{
+    const updateCart = async (cart) =>{
         await axios.patch("/user/addcart",{cart},{
             headers:{Authorization:token}
         });
@@ -33,7 +32,7 @@ export default function Cart() {
             }
         });
         setCart([...cart]);
-        updateCart();
+        updateCart(cart);
     }
     const decrement = (id) =>{
         cart.forEach(item=>{
@@ -42,7 +41,7 @@ export default function Cart() {
             }
         });
         setCart([...cart]);
-        updateCart();
+        updateCart(cart);
     }
 
     const removeProduct = id =>{
@@ -53,12 +52,21 @@ export default function Cart() {
                 }
             });
             setCart([...cart]);
-            updateCart();
+            updateCart(cart);
         }
     }
 
     const transSuccess = async(payment) =>{
         console.log(payment);
+        const {paymentID, address} = payment;
+
+        await axios.post('/api/payment', {cart, paymentID, address}, {
+            headers: {Authorization: token}
+        });
+
+        setCart([]);
+        updateCart([]);
+        alert("You have successfully placed an order.");
     }
 
     if(cart.length===0){
@@ -86,6 +94,7 @@ export default function Cart() {
                     </div>
                 ))
             }
+            {/* Note Paypal can't handle payments over 1 million */}
             <div className="total">
                 <h3>Total: $ {total}</h3>
                 <PayPalButton

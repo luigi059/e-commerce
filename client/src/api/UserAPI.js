@@ -1,9 +1,10 @@
-import React,{useState,useEffect} from 'react';
+import {useState,useEffect} from 'react';
 import axios from "axios";
 
 export default function UserAPI(token) {
     const [isLogged,setIsLogged] = useState(false);
     const [cart,setCart] = useState([]);
+    const [history,setHistory]=useState([]);
 
     useEffect(()=>{
         if(token){
@@ -47,7 +48,8 @@ export default function UserAPI(token) {
         {
             isLogged:[isLogged,setIsLogged],
             cart:[cart,setCart],
-            addCart:addCart
+            addCart:addCart,
+            history: [history, setHistory]
         }
     )
 }

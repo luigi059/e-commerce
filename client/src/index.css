@@ -46,3 +46,6 @@ button{
 
 /* ---------------- Cart ---------------- */
 @import url("./components/cart/Cart.css");
+
+/* ---------------- Order History ---------------- */
+@import url("./components/history/OrderHistory.css");

@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Payments = require("../models/paymentModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -101,6 +102,16 @@ exports.addCart = async (req,res) => {
         return res.json({msg:"Added to cart"});
     }catch(err){
         res.status(500).json({ error: err.message });
+    }
+}
+exports.history = async(req, res) =>{
+    try {
+        const history = await Payments.find({user_id: req.user.id})
+
+        res.json(history);
+    } catch (err) {
+    
+        return res.status(500).json({msg: err.message});
     }
 }
 // Creating jwt tokens
