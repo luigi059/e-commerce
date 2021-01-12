@@ -3,6 +3,7 @@ import {GlobalState} from "../../GlobalState";
 import ProductItem from "../utils/product_item/ProductItem";
 import Loading from "../utils/loading/Loading";
 import Filter from "./Filter";
+import LoadMore from "./LoadMore";
 
 export default function Product() {
     const state = useContext(GlobalState);
@@ -10,7 +11,7 @@ export default function Product() {
     console.log(state);
     return (
         <>
-        <Filter/>
+            <Filter/>
             <div className="products">
                 {
                     products.map(product => {
@@ -18,6 +19,7 @@ export default function Product() {
                     })
                 }
             </div>
+            <LoadMore />
             {products.length === 0 && <Loading/>}
         </>
     )
