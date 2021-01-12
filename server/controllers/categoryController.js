@@ -8,7 +8,7 @@ exports.getCategories = async (req,res) =>{
         res.status(500).json({ error: err.message });
     } 
 }
-// only admin can create, delete, and update categories
+// create, delete, and update categories
 exports.createCategory = async (req,res) =>{
     try{
         const{name} = req.body;

@@ -15,6 +15,7 @@ export default function UserAPI(token) {
                     })
                     setIsLogged(true);
                     setCart(res.data.cart);
+                    console.log("getUserEffectCalled");
                 }catch(err){
                     alert(err.response.data.msg)
                 }
